@@ -21,17 +21,17 @@ public class TransactionBuilder {
         PrivateKey sk = c.genSecret();
 
 
-        byte[] encripted = c.encrypt(sk, tran.getBytes());
-        System.out.println(new String(encripted));
+        byte[] encrypted = c.encrypt(sk, tran.getBytes());
+        System.out.println(new String(encrypted));
 
-        byte[] decrypted = c.decrypt(pk, encripted);
+        byte[] decrypted = c.decrypt(pk, encrypted);
         String result = new String(decrypted);
         System.out.println(result);
         System.out.println("is is " + result.equals(tran) + " the decrypted string is equal to the original");
 
         Hash h = new Hash();
 
-        h.mineTrialwString(new String(encripted));
+        h.mineTrialwString(new String(encrypted));
         System.out.println("Key was found for this data, block award given to publishing user");
         System.out.println("Everything worked!");
     }
