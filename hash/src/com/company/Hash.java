@@ -40,7 +40,7 @@ public class Hash {
 
     public String genString(){
         Random r = new Random();
-        String ret = r.ints(0, 127)
+        String ret = r.ints(33, 127)
                 .limit(64)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
@@ -57,12 +57,12 @@ public class Hash {
         System.out.println(i);
     }
 
-    public void mineTrialwString(String key) throws NoSuchAlgorithmException {
-        int i = 0;
+    public String mineTrialwString(String str) throws NoSuchAlgorithmException {
+        String temp;
         do{
-            i++;
-            key = hash(genString());
-        } while(!checkHash(key));
-        System.out.println(i);
+            temp = str + genString();
+            //key = hash(genString());
+        } while(!checkHash(hash(temp)));
+        return temp;
     }
 }
