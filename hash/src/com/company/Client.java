@@ -27,39 +27,33 @@ public class Client {
         DataInputStream dis = new DataInputStream(s.getInputStream());
         DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
-        Thread sendTransaction = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
+        Thread sendTransaction = new Thread(() -> {
+            while (true) {
 
-                    // read the message to deliver.
-                    String msg = stdin.nextLine();
-                    try {
+                // read the message to deliver.
+                String msg = stdin.nextLine();
+                try {
 
-                        // write on the output stream
-                        dos.writeUTF(msg);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    // write on the output stream
+                    dos.writeUTF(msg);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
 
-        Thread readTransaction = new Thread(new Runnable() {
+        Thread readTransaction = new Thread(() -> {
 
-            @Override
-            public void run() {
+            while (true) {
+                try {
 
-                while (true) {
-                    try {
+                    // read the message sent to this client
+                    //TODO: Decrypt based on private key
+                    String msg = dis.readUTF();
+                    System.out.println(msg);
+                } catch (IOException e) {
 
-                        // read the message sent to this client
-                        String msg = dis.readUTF();
-                        System.out.println(msg);
-                    } catch (IOException e) {
-
-                        e.printStackTrace();
-                    }
+                    e.printStackTrace();
                 }
             }
         });

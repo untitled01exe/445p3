@@ -50,21 +50,16 @@ class ClientHandler implements Runnable
 
 
                 // break the string into message and recipient part
-                StringTokenizer st = new StringTokenizer(received, "#");
-                String MsgToSend = st.nextToken();
-                String recipient = st.nextToken();
+                String MsgToSend = received;
+
 
                 // search for the recipient in the connected devices list.
                 for (ClientHandler mc : Server.clients.values())
                 {
-                    System.out.println("Client Name: " + mc.name);
-                    System.out.println("Recipient Name" + recipient);
-                    // if the recipient is found, write on its
-                    // output stream
-                    if (mc.name.equals(recipient))
-                    {
-                        mc.dos.writeUTF(this.name+" : "+MsgToSend);
-                        break;
+                    //TODO: encrypt transaction differently for each client based on public key
+                    // write to recipient's output stream
+                    if(mc.name != this.name) {
+                        mc.dos.writeUTF(this.name + " : " + MsgToSend);
                     }
                 }
             } catch (IOException e) {
