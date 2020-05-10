@@ -107,6 +107,18 @@ public class TransactionBuilder {
         }
     }
 
+    public void parseTransaction(String line){
+        Scanner s = new Scanner(line);
+        String[] transaction = line.split(" ");
+        //uses space delimiter to get each user/coin pair
+        int transID = Integer.parseInt(transaction[0]);
+        User u1 = users.getUser(transaction[1]);
+        int transferCoin = Integer.parseInt(transaction[2]);
+        User u2 = users.getUser(transaction[3]);
+        u1.removeFunds(transferCoin);
+        u2.addFunds(transferCoin);
+    }
+
     public String buildTransactionLine(int trans) {
         User u1 = null;
         User u2 = null;
@@ -127,6 +139,11 @@ public class TransactionBuilder {
         //replaces the necessary funds for each user
 
         String ret = trans + " " + u1.username + " " + transferCoin + " " + u2.username;
+        return ret;
+    }
+
+    public String buildTransaction(int transID, int transferCoin, User u1, User u2) {
+        String ret = transID + " " + u1.username + " " + transferCoin + " " + u2.username;
         return ret;
     }
 

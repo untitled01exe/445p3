@@ -41,7 +41,7 @@ public class Crypt {
         return pk;
     }
 
-    public byte[] encrypt(PrivateKey key, byte[] data) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
+    public byte[] encrypt(PublicKey key, byte[] data) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
         c.init(Cipher.ENCRYPT_MODE, key);
         byte[] b = c.doFinal(data);
         //-------------
@@ -54,7 +54,7 @@ public class Crypt {
         return b;
     }
 
-    public byte[] decrypt (PublicKey key, byte[] data) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
+    public byte[] decrypt (PrivateKey key, byte[] data) throws InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
         c.init(Cipher.DECRYPT_MODE, key);
         byte[] b = c.doFinal(data);
         //System.out.println(Arrays.toString(b));
@@ -80,8 +80,8 @@ public class Crypt {
         System.out.println(Arrays.toString(sk.getEncoded()));
         System.out.println(Arrays.toString(pk.getEncoded()));
 
-        b = c.encrypt(c.genSecret(), "WOAH I GOTTA GET IN THE BOX".getBytes());
-        c.decrypt(c.genPublic(), b);
+        b = c.encrypt(c.genPublic(), "WOAH I GOTTA GET IN THE BOX".getBytes());
+        c.decrypt(c.genSecret(), b);
     }
 }
 
