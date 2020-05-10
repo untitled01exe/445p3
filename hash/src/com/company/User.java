@@ -27,6 +27,14 @@ public class User {
         System.out.println();
     }
 
+    public User(String username, PrivateKey sk, PublicKey pk) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        this.username  = username;
+        this.sk = sk;
+        this.pk = pk;
+        System.out.println();
+    }
+
     public void addFunds(int i){
         coin = coin + i;
     }

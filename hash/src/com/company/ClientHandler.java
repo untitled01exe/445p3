@@ -4,8 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -19,6 +21,7 @@ class ClientHandler implements Runnable
     public final PublicKey publicKey;
     private final PrivateKey privateKey;
     boolean isloggedin;
+    User user;
 
     // constructor
     public ClientHandler(Socket s, String name, DataInputStream dis, DataOutputStream dos, PublicKey puKey, PrivateKey prKey){
@@ -27,6 +30,14 @@ class ClientHandler implements Runnable
         this.dos = dos;
         this.publicKey = puKey;
         this.privateKey = prKey;
+        try {
+            this.user = new User(name, prKey, puKey);
+        } catch (NoSuchAlgorithmException e) {
+            System.err.println("Problem creating user");
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
