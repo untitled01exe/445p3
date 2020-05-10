@@ -33,14 +33,14 @@ public class Server {
             DataInputStream dis = new DataInputStream(socket.getInputStream());
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
-            Crypt crypt = new Crypt();
-            PublicKey publicKey = crypt.genPublic();
-            PrivateKey privateKey = crypt.genSecret();
+            String userName = "u" + counter;
 
-            ClientHandler clientHandler = new ClientHandler(socket, String.valueOf(counter), dis, dos, publicKey, privateKey);
+            User user = USERS.getUser(userName);
+
+            ClientHandler clientHandler = new ClientHandler(socket, userName, dis, dos, user);
             Thread clientThread = new Thread(clientHandler);
             clientThread.start();
-            clients.put(publicKey, clientHandler);
+            clients.put(user.pk, clientHandler);
         }
     }catch(Exception e){
         System.out.println(e);

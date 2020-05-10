@@ -18,26 +18,15 @@ class ClientHandler implements Runnable
     final DataInputStream dis;
     final DataOutputStream dos;
     Socket socket;
-    public final PublicKey publicKey;
-    private final PrivateKey privateKey;
     boolean isloggedin;
     User user;
 
     // constructor
-    public ClientHandler(Socket s, String name, DataInputStream dis, DataOutputStream dos, PublicKey puKey, PrivateKey prKey){
+    public ClientHandler(Socket s, String name, DataInputStream dis, DataOutputStream dos, User user){
         this.name = name;
         this.dis = dis;
         this.dos = dos;
-        this.publicKey = puKey;
-        this.privateKey = prKey;
-        try {
-            this.user = new User(name, prKey, puKey);
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println("Problem creating user");
-            e.printStackTrace();
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
+        this.user = user;
     }
 
     @Override
