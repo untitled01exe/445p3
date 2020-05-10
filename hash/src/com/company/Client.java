@@ -10,10 +10,12 @@ import java.util.Scanner;
 
 public class Client {
 
-    final static int ServerPort = 1234;
+    static int ServerPort;
 
     public static void main(String args[]) throws UnknownHostException, IOException {
         Scanner stdin = new Scanner(System.in);
+        System.out.println("Enter Server Port: ");
+        ServerPort = Integer.parseInt(stdin.nextLine());
 
         // getting localhost ip
         InetAddress ip = InetAddress.getByName("localhost");

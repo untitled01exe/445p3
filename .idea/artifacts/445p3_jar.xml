@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="445p3:jar">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="445p3.jar">
+      <element id="module-output" name="445p3" />
+    </root>
+  </artifact>
+</component>

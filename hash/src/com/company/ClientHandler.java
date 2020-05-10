@@ -57,6 +57,8 @@ class ClientHandler implements Runnable
                 // search for the recipient in the connected devices list.
                 for (ClientHandler mc : Server.clients.values())
                 {
+                    System.out.println("Client Name: " + mc.name);
+                    System.out.println("Recipient Name" + recipient);
                     // if the recipient is found, write on its
                     // output stream
                     if (mc.name.equals(recipient))

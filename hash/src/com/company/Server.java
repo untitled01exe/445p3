@@ -18,7 +18,6 @@ public class Server {
 
     public static void main(String[] args){
      try{
-         Crypt crypt = new Crypt();
         BufferedReader stdin=new BufferedReader(new InputStreamReader(System.in));
         int port;
         System.out.println("Enter Port:");
@@ -34,6 +33,7 @@ public class Server {
             DataInputStream dis = new DataInputStream(socket.getInputStream());
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
+            Crypt crypt = new Crypt();
             PublicKey publicKey = crypt.genPublic();
             PrivateKey privateKey = crypt.genSecret();
 
