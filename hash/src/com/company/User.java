@@ -1,6 +1,5 @@
 package com.company;
 
-import javax.crypto.SecretKey;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -24,14 +23,6 @@ public class User {
         this.username  = username;
         this.sk = kf.generatePrivate(new PKCS8EncodedKeySpec(sk));
         this.pk = kf.generatePublic(new X509EncodedKeySpec(pk));
-        System.out.println();
-    }
-
-    public User(String username, PrivateKey sk, PublicKey pk) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        this.username  = username;
-        this.sk = sk;
-        this.pk = pk;
         System.out.println();
     }
 
