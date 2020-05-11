@@ -36,12 +36,12 @@ public class BlockChainManager {
             //finds existing file, makes a random block
 
             BufferedWriter fw = new BufferedWriter(new FileWriter("chain.txt", true));
-/*
+
             fw.newLine();
             fw.write(tb.randomBlock());
             fw.flush();
             fw.close();
-*/
+
             findTransaction(17, file);
         }
     }
