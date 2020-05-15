@@ -34,51 +34,6 @@ public class Client {
     private static ArrayList<Block> blocks;
 
     public static void main(String args[]) throws UnknownHostException, IOException, NoSuchPaddingException, InvalidKeySpecException, NoSuchAlgorithmException, InterruptedException, ClassNotFoundException {
-        /*
-        Scanner stdin = new Scanner(System.in);
-        System.out.println("Enter Server Port: ");
-        ServerPort = Integer.parseInt(stdin.nextLine());
-
-        //We really should do something better here but it works for our purposes
-        System.out.println("Enter your username: ");
-        String username = stdin.nextLine();
-        User sender = USERS.getUser(username);
-        User user = sender;
-
-        // getting localhost ip
-        InetAddress ip = InetAddress.getByName("localhost");
-
-        // establish the connection
-        Socket s = new Socket(ip, ServerPort);
-
-        // obtaining input and out streams
-        ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-        ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
-
-        blockchain = new Blockchain();
-
-        while (true) {
-            try {
-                // build transaction for broadcast
-                System.out.println("Enter username to transfer coins to:");
-                User recipient = USERS.getUser(stdin.nextLine());
-                System.out.printf("Enter desired transfer amount");
-                int transactionAmount = Integer.parseInt(stdin.nextLine());
-                Transaction t = new Transaction(sender, recipient, transactionAmount);
-                String transaction = t.transaction;
-                // write on the output stream
-                //new Thread(new CatchupRunnable(s.getLocalPort(), username, user, oos, ois, blockchain));
-                new Thread(new SenderRunnable(recipient, transaction, s)).start();
-                new Thread(new ClientRunnable(s, username, ois, oos, user, blockchain)).start();
-                //dos.writeUTF(transaction);
-
-            } catch (NoSuchAlgorithmException | NoSuchPaddingException | IOException e) {
-                e.printStackTrace();
-            }
-        } */
-
-
-        TransactionBuilder transactionBuilder = new TransactionBuilder();
         crypt = new Crypt();
 
         Blockchain blockchain = new Blockchain();
