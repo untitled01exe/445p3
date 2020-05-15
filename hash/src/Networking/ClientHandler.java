@@ -2,6 +2,7 @@ package Networking;
 
 import Blockchain.Transaction;
 import com.company.Crypt;
+import com.company.IntCon;
 import com.company.User;
 
 import javax.crypto.BadPaddingException;
@@ -88,11 +89,12 @@ class ClientHandler implements Runnable
     void broadcast(String message) throws IOException, BadPaddingException, InvalidKeyException, IllegalBlockSizeException, NoSuchAlgorithmException, NoSuchPaddingException {
         for (ClientHandler recipient : Server.clients.values())
         {
-            //TODO: fix encryption
             if(recipient.name != this.name) {
-                String encrypted = crypt.encryptTransaction(recipient.user, message);
-               // recipient.dos.writeUTF(this.name + " : " + encrypted);
-                recipient.dos.writeUTF(this.name + " : " + message);
+                message = this.name + " : " + message;
+                //Message is RSA encrypted before it is sent
+                byte[] e = crypt.encrypt(recipient.user.privateKey, message.getBytes());
+                recipient.dos.write(e);
+                recipient.dos.flush();
             }
         }
     }

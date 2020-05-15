@@ -15,9 +15,10 @@ u1:50 u2:50 u3:50 u4:50
 
 Previous Hash: 0
 
+
 Time Stamp: 1589550843578
 
-Transactions: 
+Transactions:
 
 Transaction: u2 : u2 1 -> u1
 
@@ -27,14 +28,14 @@ Transaction: u2 : u2 3 -> u1
 
 Transaction: u2 : u2 4 -> u1
 
-u1:60 u2:40 u3:50 u4:50 
+u1:60 u2:40 u3:50 u4:50
 
 Previous Hash: f806ef9573c6cc4d34afb75f39faabb2bcd4a71c264e2516c56c1236deca2ad3
 
 
 Time Stamp: 1589555579114
 
-Transactions: 
+Transactions:
 
 Transaction: u2 : u2 2 -> u1
 
@@ -44,10 +45,40 @@ Transaction: u2 : u2 3 -> u1
 
 Transaction: u2 : u2 4 -> u1
 
-u1:70 u2:30 u3:50 u4:50 
+u1:70 u2:30 u3:50 u4:50
 
 Previous Hash: 7da43d53c2eec2896b024713cd3f757f58d7ff6e9bc1bde733c43fa87ed982b0
 
 
+Time Stamp: 1589558616205
+
+Transactions:
+
+Transaction: u2 : u2 2 -> u1
+
+Transaction: u2 : u2 3 -> u1
+
+Transaction: u2 : u2 4 -> u1
+
+Transaction: u2 : u2 1 -> u1
+
+u1:80 u2:20 u3:50 u4:50
+
+Previous Hash: c57b4d94d6f3782e714916bb7e6384bde0c924973b90cd8ee25713910df2097f
 
 
+Time Stamp: 1589558623119
+
+Transactions:
+
+Transaction: u1 : u1 20 -> u2
+
+Transaction: u1 : u1 1 -> u2
+
+Transaction: u1 : u1 3 -> u2
+
+Transaction: u1 : u1 1 -> u2
+
+u1:45 u2:55 u3:50 u4:50
+
+Previous Hash: c57b4d94d6f3782e714916bb7e6384bde0c924973b90cd8ee25713910df2097f

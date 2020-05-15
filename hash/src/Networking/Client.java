@@ -3,15 +3,13 @@ package Networking;
 import Blockchain.Block;
 import Blockchain.Blockchain;
 import Blockchain.Transaction;
-import com.company.Crypt;
-import com.company.TransactionBuilder;
-import com.company.USERS;
-import com.company.User;
+import com.company.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.*;
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -49,7 +47,7 @@ public class Client {
         System.out.println("Enter your username: ");
         String username = stdin.nextLine();
         User sender = USERS.getUser(username);
-        User user = sender;
+        user = sender;
 
         // getting localhost ip
         InetAddress ip = InetAddress.getByName("localhost");
@@ -100,11 +98,27 @@ public class Client {
 
                     // read the message sent to this client
                     // Decrypt based on private key
-                    String msg = dis.readUTF();
+
+                    byte[] toDecrypt = new byte[256];
+                    dis.readFully(toDecrypt);
+
+                   // String msgToDecrypt = dis.readUTF();
+                   // String msg = new String(crypt.decrypt(user.pk, msgToDecrypt.getBytes()));
+                    String msg = new String(crypt.decrypt(user.pk, toDecrypt));
+
+                    //IntCon ic = new IntCon();
+                    //byte[] b = ic.intToArr(new BigInteger(msgToDecrypt.getBytes()));
+
+                   // byte[] retArr = crypt.decrypt(user.pk, b);
+
+                    //String msg = new String(retArr);
+
+                   // String msg = crypt.decryptString(user.pk, msgToDecrypt);
                     if(msg.equalsIgnoreCase("update")){
                         updateLocalChain();
                     }     else {
                         //String decrpyted = crypt.decryptTransaction(user, msg);
+
                         System.out.println(msg);
                         //validate the transaction
                         boolean validTransaction = validateTransaction(msg);
@@ -149,6 +163,12 @@ public class Client {
 
                 } catch (IOException | InterruptedException e) {
 
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 }
 
