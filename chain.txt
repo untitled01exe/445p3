@@ -1,16 +1,16 @@
 
-Transaction: 
+Transactions: 
 
-u1: 50
+InitTrans: u1: 50
 
-u2: 50
+InitTrans: u2: 50
 
-u3: 50
+InitTrans: u3: 50
 
-u4: 50
+InitTrans: u4: 50
 
 u1:50 u2:50 u3:50 u4:50 
 
 Previous Hash: 0
 
-Time Stamp: 1589511043258
+Time Stamp: 1589549929960

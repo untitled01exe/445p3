@@ -6,6 +6,7 @@ import com.company.User;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static java.security.MessageDigest.*;
@@ -14,13 +15,12 @@ public class Block implements Serializable{
     public String hash;
     public String previousHash;
     static String transactionData = "";
-    static String totals = "";
+    public static String totals = "";
     int transactionCounter = 0;
     static final int MAX_TRANS_COUNT = 4;
     private long timeStamp;
     private int nonce;
     private static String space = "\n\n";
-    static Block prevblock;
 
 
     public Block(String previousHash) {
@@ -28,10 +28,12 @@ public class Block implements Serializable{
         this.timeStamp = new Date().getTime();
     }
 
-    public Block(String previousHash, Long timeStamp, String totals) {
+    public Block(String transactionData, String previousHash, Long timeStamp, String totals) {
+        this.transactionData = transactionData;
+        this.totals = totals;
         this.previousHash = previousHash;
         this.timeStamp = timeStamp;
-        this.totals = totals;
+        this.hash = calculateHash();
     }
 
     public Block(String data,String previousHash ) {
@@ -43,7 +45,7 @@ public class Block implements Serializable{
 
     //Calculate new hash based on blocks contents
     public String calculateHash() {
-        String dataToHash = transactionData + getTotals() + previousHash + timeStamp + nonce;
+        String dataToHash = transactionData + previousHash + timeStamp + nonce;
         MessageDigest digest = null;
         byte[] bytes = null;
         try {
@@ -70,17 +72,21 @@ public class Block implements Serializable{
         return hash;
     }
 
-    public boolean addTransaction(String transaction){
+    public boolean addTransaction(String transaction, User[] users){
+        String transMarker = "Transaction: ";
         if(transactionCounter < MAX_TRANS_COUNT){
-            transactionData += transaction + space;
+            transactionData += space + transMarker + transaction;
             transactionCounter++;
             return true;
+        } else{
+            transactionData += space + getTotals(users);
         }
         return false;
     }
 
-    public static String getTotals(){
-        for(User user : USERS.users){
+    public static String getTotals(User[] users){
+        totals = "";
+        for(User user : users){
             String name = user.getUsername();
             int balance = user.coin;
             String userTotal = name + ":" + balance + " ";
@@ -90,13 +96,14 @@ public class Block implements Serializable{
     }
 
     public static Block initBlock(){
-        String t1 = "u1:" + " 50";
-        String t2 = "u2:" + " 50";
-        String t3 = "u3:" + " 50";
-        String t4 = "u4:" + " 50";
+        String initTrans = "InitTrans: ";
+        String t1 = initTrans + "u1:" + " 50";
+        String t2 = initTrans + "u2:" + " 50";
+        String t3 = initTrans + "u3:" + " 50";
+        String t4 = initTrans + "u4:" + " 50";
 
         //add the totals line to the block string
-        String transactionData = space + t1 + space + t2 + space + t3 + space + t4 + space + getTotals();
+        String transactionData = space + t1 + space + t2 + space + t3 + space + t4 + space + getTotals(USERS.users);
 
         return new Block(transactionData, "0");
     }
@@ -109,20 +116,16 @@ public class Block implements Serializable{
         fw.close();
     }
 
+    public static boolean isComplete(){
+        return (transactionData.length() > 0);
+    }
+
     public Long getTimestamp(){
         return timeStamp;
     }
 
     public String toString(){
-        return "Transaction: " + transactionData + space + "Previous Hash: " + previousHash + space + "Time Stamp: " +  timeStamp;
-    }
-
-    static public void setPreviousBlock(Block b){
-        prevblock = b;
-    }
-
-    static public Block getPreviousBlock(){
-        return prevblock;
+        return "Transactions: " + transactionData + space + "Previous Hash: " + previousHash + space + "Time Stamp: " +  timeStamp;
     }
 
 }

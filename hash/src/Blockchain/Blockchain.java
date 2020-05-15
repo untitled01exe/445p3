@@ -39,6 +39,7 @@ public class Blockchain {
             String totals = "";
             String prevHash = "";
             Long timestamp = Long.valueOf(0);
+            String transData = "";
 
             while((line=br.readLine())!=null){
                 String[] splitLine = line.split(" ");
@@ -52,8 +53,13 @@ public class Blockchain {
                     prevHash = splitLine[2];
                 } else if(splitLine[0].equalsIgnoreCase("time")){
                     timestamp = Long.parseLong(splitLine[2]);
-                    Block b = new Block(prevHash, timestamp, totals);
+                    Block b = new Block(transData, prevHash, timestamp, totals);
                     blockchain.add(b);
+                    totals = "";
+                    prevHash = "";
+                    transData = "";
+                } else if(splitLine[0].equalsIgnoreCase("inittrans:") || splitLine[0].equalsIgnoreCase("transaction:")){
+                    transData += line;
                 }
             }
             br.close();
@@ -92,7 +98,7 @@ public class Blockchain {
         return true;
     }
 
-    public static Boolean validateChain(ArrayList<Block> blocks) {
+    public static synchronized Boolean validateChain(ArrayList<Block> blocks) {
         Block currentBlock;
         Block previousBlock;
         String hashTarget = new String(new char[difficulty]).replace('\0', '0');
@@ -101,6 +107,7 @@ public class Blockchain {
         for(int i=1; i < blocks.size(); i++) {
             currentBlock = blocks.get(i);
             previousBlock = blocks.get(i-1);
+
             //compare registered hash and calculated hash:
             if(!currentBlock.hash.equals(currentBlock.hash) ){
                 System.out.println("Registered: " + currentBlock.hash);
@@ -116,26 +123,39 @@ public class Blockchain {
             //check if hash is solved
             if(!currentBlock.hash.substring( 0, difficulty).equals(hashTarget)) {
                 System.out.println("This block hasn't been mined");
+                System.out.println("cur hash " + currentBlock.hash);
+                System.out.println("target: " + hashTarget);
                 return false;
             }
         }
         return true;
     }
 
-    public synchronized boolean updateChain(Block block) throws IOException {
-        if(blockchain.get(blockchain.size()-1).getTimestamp() < block.getTimestamp()) {
+    public static synchronized Boolean validateBlock(Block block) {
+        Block previousBlock = blockchain.get(blockchain.indexOf(block)-1);
+        String hashTarget = new String(new char[difficulty]).replace('\0', '0');
+
+        if(!block.hash.substring(0, difficulty).equals(hashTarget)){
+            System.out.println("Not mined");
+            return false;
+        }
+        if(!previousBlock.hash.equals(block.previousHash)){
+            System.out.println("previous hash does not match: " + previousBlock.hash);
+            return false;
+        }
+            return true;
+    }
+
+    public synchronized boolean updateChain(Block block, User[] users) throws IOException {
+        if(blockchain.get(blockchain.size()-1).getTimestamp() <= block.getTimestamp()) {
             blockchain.add(block);
+            for(User user : users){
+                USERS.updateBalance(user.getUsername(), user.coin);
+            }
             block.writeBlock();
             return true;
         }
         return false;
-    }
-
-    public static void catchup(ArrayList<Block> updatedBlocks){
-        blockchain = new ArrayList<Block>();
-        for(Block b : updatedBlocks){
-            blockchain.add(b);
-        }
     }
 
 }
