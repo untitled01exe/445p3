@@ -17,7 +17,6 @@ import java.util.Scanner;
 
 class ClientHandler implements Runnable
 {
-    Scanner stdin = new Scanner(System.in);
     public String name;
     final DataInputStream dis;
     final DataOutputStream dos;

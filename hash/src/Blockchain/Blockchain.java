@@ -41,23 +41,34 @@ public class Blockchain {
             Long timestamp = Long.valueOf(0);
             String transData = "";
 
+            Long mostRecentTime = Long.MIN_VALUE;
+
             while((line=br.readLine())!=null){
                 String[] splitLine = line.split(" ");
                 if(splitLine.length == 4){
-                    totals = line;
-                    for(String s : splitLine){
-                        String[] userBal = s.split(":");
-                        USERS.updateBalance(userBal[0], Integer.parseInt(userBal[1]));
+                    if(timestamp > mostRecentTime) {
+                        totals = line;
+                        for (String s : splitLine) {
+                            String[] userBal = s.split(":");
+                             for(User u : USERS.users){
+                                if(u.getUsername().equals(userBal[0])){
+                                    u.coin = Integer.parseInt(userBal[1]);
+                                }
+                            }
+                        }
+                        mostRecentTime = timestamp;
                     }
                 } else if(splitLine[0].equalsIgnoreCase("previous")){
+                    //Last part of a block is the previous hash
                     prevHash = splitLine[2];
-                } else if(splitLine[0].equalsIgnoreCase("time")){
-                    timestamp = Long.parseLong(splitLine[2]);
                     Block b = new Block(transData, prevHash, timestamp, totals);
                     blockchain.add(b);
                     totals = "";
                     prevHash = "";
                     transData = "";
+                } else if(splitLine[0].equalsIgnoreCase("time")){
+                    //first part of a block is the timestamp
+                    timestamp = Long.parseLong(splitLine[2]);
                 } else if(splitLine[0].equalsIgnoreCase("inittrans:") || splitLine[0].equalsIgnoreCase("transaction:")){
                     transData += line;
                 }

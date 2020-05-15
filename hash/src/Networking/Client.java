@@ -88,7 +88,6 @@ public class Client {
                 try {
                     updateLocalChain();
                     String prevHash = blocks.get(blocks.size()-1).hash;
-                    System.out.println("Previous Hash: " + prevHash);
                     curBlock = new Block(prevHash);
                 } catch (IOException e) {
                     e.printStackTrace();

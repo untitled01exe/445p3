@@ -1,5 +1,7 @@
 
-Transactions: 
+Time Stamp: 1589549929960
+
+Transactions:
 
 InitTrans: u1: 50
 
@@ -13,4 +15,39 @@ u1:50 u2:50 u3:50 u4:50
 
 Previous Hash: 0
 
-Time Stamp: 1589549929960
+Time Stamp: 1589550843578
+
+Transactions: 
+
+Transaction: u2 : u2 1 -> u1
+
+Transaction: u2 : u2 2 -> u1
+
+Transaction: u2 : u2 3 -> u1
+
+Transaction: u2 : u2 4 -> u1
+
+u1:60 u2:40 u3:50 u4:50 
+
+Previous Hash: f806ef9573c6cc4d34afb75f39faabb2bcd4a71c264e2516c56c1236deca2ad3
+
+
+Time Stamp: 1589555579114
+
+Transactions: 
+
+Transaction: u2 : u2 2 -> u1
+
+Transaction: u2 : u2 1 -> u1
+
+Transaction: u2 : u2 3 -> u1
+
+Transaction: u2 : u2 4 -> u1
+
+u1:70 u2:30 u3:50 u4:50 
+
+Previous Hash: 7da43d53c2eec2896b024713cd3f757f58d7ff6e9bc1bde733c43fa87ed982b0
+
+
+
+

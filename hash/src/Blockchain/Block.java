@@ -26,6 +26,7 @@ public class Block implements Serializable{
     public Block(String previousHash) {
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
+        this.transactionData = "";
     }
 
     public Block(String transactionData, String previousHash, Long timeStamp, String totals) {
@@ -112,6 +113,7 @@ public class Block implements Serializable{
         BufferedWriter fw = new BufferedWriter(new FileWriter("chain.txt", true));
         fw.newLine();
         fw.write(this.toString());
+        transactionData = "";
         fw.flush();
         fw.close();
     }
@@ -125,7 +127,7 @@ public class Block implements Serializable{
     }
 
     public String toString(){
-        return "Transactions: " + transactionData + space + "Previous Hash: " + previousHash + space + "Time Stamp: " +  timeStamp;
+        return "Time Stamp: " +  timeStamp + space + "Transactions: " + transactionData + space + "Previous Hash: " + previousHash + space;
     }
 
 }
