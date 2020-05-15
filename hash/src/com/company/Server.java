@@ -4,25 +4,23 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.KeyPair;
-import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Server {
 
     static HashMap<PublicKey, ClientHandler> clients = new HashMap<>();
+    public static InetAddress SERVER_ADDRESS;
+    public static final int PORT = 8888;
 
     public static void main(String[] args){
      try{
-        BufferedReader stdin=new BufferedReader(new InputStreamReader(System.in));
-        int port;
-        System.out.println("Enter Port:");
-        port = Integer.parseInt(stdin.readLine());
-        ServerSocket server=new ServerSocket(port);
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        ServerSocket server = new ServerSocket(PORT);
+        SERVER_ADDRESS = InetAddress.getLocalHost();
         int counter=0;
         System.out.println("Server Started ....");
         while(true){

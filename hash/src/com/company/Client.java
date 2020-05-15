@@ -1,18 +1,24 @@
 package com.company;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Scanner;
 
 public class Client {
 
     static int ServerPort;
 
-    public static void main(String args[]) throws UnknownHostException, IOException {
+    public static void main(String args[]) throws UnknownHostException, IOException, NoSuchPaddingException, InvalidKeySpecException, NoSuchAlgorithmException {
+        TransactionBuilder transactionBuilder = new TransactionBuilder();
+
         Scanner stdin = new Scanner(System.in);
         System.out.println("Enter Server Port: ");
         ServerPort = Integer.parseInt(stdin.nextLine());
@@ -29,16 +35,25 @@ public class Client {
 
         Thread sendTransaction = new Thread(() -> {
             while (true) {
-
-                // read the message to deliver.
-                String msg = stdin.nextLine();
                 try {
-
+                    // build transaction for broadcast
+                    System.out.println("Enter username to transfer coins to:");
+                    User recipient = USERS.getUser(stdin.nextLine());
+                    System.out.printf("Enter desired transfer amount");
+                    int transactionAmount = Integer.parseInt(stdin.nextLine());
+                    //String transaction = transactionBuilder.buildTransaction(InetAddress.getLocalHost().getHostAddress(), recipient, transactionAmount);
                     // write on the output stream
-                    dos.writeUTF(msg);
+                    //dos.writeUTF(transaction);
+                    dos.writeUTF("");
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                } /*catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                }*/
             }
         });
 
@@ -61,4 +76,5 @@ public class Client {
         sendTransaction.start();
         readTransaction.start();
     }
+
 }

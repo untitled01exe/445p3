@@ -1,5 +1,8 @@
 package com.company;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.net.InetAddress;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -12,18 +15,28 @@ public class User {
 
     String username;
 
-    public PrivateKey sk;
+    public PrivateKey privateKey;
 
     public PublicKey pk;
 
     public int coin = 0;
 
-    public User(String username, byte[] sk,  byte[] pk) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    InetAddress userIP;
+
+    public User(String username, byte[] privateKey, byte[] pk) throws NoSuchAlgorithmException, InvalidKeySpecException {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         this.username  = username;
-        this.sk = kf.generatePrivate(new PKCS8EncodedKeySpec(sk));
+        this.privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(privateKey));
         this.pk = kf.generatePublic(new X509EncodedKeySpec(pk));
         System.out.println();
+    }
+
+    public void setIP(InetAddress ip){
+        userIP = ip;
+    }
+
+    public String getUserIP(){
+        return userIP.toString();
     }
 
     public void addFunds(int i){
@@ -36,6 +49,10 @@ public class User {
             return true;
         }
         return false;
+    }
+
+    public String getUsername(){
+        return username;
     }
 
     public String toString(){

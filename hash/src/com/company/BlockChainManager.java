@@ -32,7 +32,9 @@ public class BlockChainManager {
             fw.write(tb.initBlock());
             fw.flush();
             fw.close();
-        } else {
+        }
+
+        else {
             //finds existing file, makes a random block
 
             BufferedWriter fw = new BufferedWriter(new FileWriter("chain.txt", true));
@@ -44,12 +46,20 @@ public class BlockChainManager {
 
             findTransaction(17, file);
         }
+
+
     }
 
-    public void update() throws IOException {
-        //rl.lock();
+    public void addBlock(Block block) throws IOException {
+        rl.lock();
+        //Open blockchain file, write new block to it
+        BufferedWriter fw = new BufferedWriter(new FileWriter("chain.txt", true));
+        fw.newLine();
+        fw.write(block.hash);
+        fw.flush();
+        fw.close();
 
-        //rl.unlock();
+        rl.unlock();
     }
 
     public boolean findTransaction(int i, File f) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {

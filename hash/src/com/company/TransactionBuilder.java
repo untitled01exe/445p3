@@ -32,16 +32,16 @@ public class TransactionBuilder {
 
     public String initBlock() throws NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, IOException {
         String t1 = "0 S " + users.users[0].username + " 20";
-        t1 = ic.arrToBInt(c.encrypt(users.system.sk, t1.getBytes())).toString();
+        t1 = ic.arrToBInt(c.encrypt(users.system.privateKey, t1.getBytes())).toString();
         t1 = finishTransLine(t1, 0, users.system);
         String t2 = "0 S " + users.users[1].username + " 20";
-        t2 = ic.arrToBInt(c.encrypt(users.system.sk, t2.getBytes())).toString();
+        t2 = ic.arrToBInt(c.encrypt(users.system.privateKey, t2.getBytes())).toString();
         t2 = finishTransLine(t2, 0, users.system);
         String t3 = "0 S " + users.users[2].username + " 20";
-        t3 = ic.arrToBInt(c.encrypt(users.system.sk, t3.getBytes())).toString();
+        t3 = ic.arrToBInt(c.encrypt(users.system.privateKey, t3.getBytes())).toString();
         t3 = finishTransLine(t3, 0, users.system);
         String t4 = "0 S " + users.users[3].username + " 20";
-        t4 = ic.arrToBInt(c.encrypt(users.system.sk, t4.getBytes())).toString();
+        t4 = ic.arrToBInt(c.encrypt(users.system.privateKey, t4.getBytes())).toString();
         t4 = finishTransLine(t4, 0, users.system);
 
         for (User user : users.users) {
@@ -51,9 +51,10 @@ public class TransactionBuilder {
         //add "coin" to each user instance
         String totals = users.totals();
         //add the totals line to the block string
+       // Block b = new Block(t1, t2, t3, t4, "00000000");
         String block = "BLOCK: 0" + space + t1 + t2 + t3 + t4 + "*" + space + totals + space + "*" + space;
 
-        String ret = h.mineTrialwString(block);
+        String ret = h.mineSolution(block);
         //finds an appropriate key to complete the block
         return ret + space;
     }
@@ -109,7 +110,7 @@ public class TransactionBuilder {
         String block = "BLOCK: " + (index+1) + space + t1 + t2 + t3 + t4 + t5 + totals + space + oldHashKey + space;
         //constructs block string
 
-        String ret = h.mineTrialwString(block);
+        String ret = h.mineSolution(block);
         //System.out.println(index);
         return ret + space;
     }
@@ -145,7 +146,7 @@ public class TransactionBuilder {
         //replaces the necessary funds for each user
 
         String ret = trans + " " + u1.username + " " + transferCoin + " " + u2.username;
-        ret = ic.arrToBInt(c.encrypt(u1.sk, ret.getBytes())).toString();
+        ret = ic.arrToBInt(c.encrypt(u1.privateKey, ret.getBytes())).toString();
         ret = finishTransLine(ret, trans, u1);
         return ret;
     }
@@ -155,13 +156,59 @@ public class TransactionBuilder {
         s = s  + i + " " + u.username + "\n";
         return s;
     }
+/*
+    public String buildTransaction(User sender, User recipient, int transAmount) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, IOException {
+        File f = new File("chain.txt");
+        Scanner s = new Scanner(f);
+        s.useDelimiter(Pattern.compile("\nBLOCK: ([0-9])+\n"));
+        int index = -1;
+        while(s.hasNext()){
+            s.next();
+            index++;
+        }
+        //^^ finds current block number
+
+        int transID = index*5+1;
+        //finds current transaction number
+
+        //User u1 = USERS.getUserByIP(sender);
+        User u1 = USERS.u1;
+
+        String transaction = transID + " " + u1.username + " " + transAmount + " " + recipient.username;
+        transaction = ic.arrToBInt(c.encrypt(u1.sk, transaction.getBytes())).toString();
+        transaction = finishTransLine(transaction, transID, u1);
+        return transaction;
+    }
+*/
+
+public String buildTransaction(User sender, User recipient, int transAmount) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, IOException {
+    File f = new File("chain.txt");
+    Scanner s = new Scanner(f);
+    s.useDelimiter(Pattern.compile("\nBLOCK: ([0-9])+\n"));
+    int index = -1;
+    while(s.hasNext()){
+        s.next();
+        index++;
+    }
+    //^^ finds current block number
+
+    int transID = index*5+1;
+    //finds current transaction number
+
+    String transaction = transID + " " + sender.username + " " + transAmount + " " + recipient.username;
+    transaction = ic.arrToBInt(c.encrypt(sender.privateKey, transaction.getBytes())).toString();
+    transaction = finishTransLine(transaction, transID, sender);
+    return transaction;
+}
+
 
     public String buildRewardLine(User u, int tranNum) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, IOException {
         u.addFunds(20);
         String ret = tranNum + " S 20 " + u.username;
-        ret = ic.arrToBInt(c.encrypt(users.system.sk, ret.getBytes())).toString();
+        ret = ic.arrToBInt(c.encrypt(users.system.privateKey, ret.getBytes())).toString();
         ret = finishTransLine(ret, tranNum, users.system);
         return ret;
         //another call to increase funds for init block
     }
+
 }

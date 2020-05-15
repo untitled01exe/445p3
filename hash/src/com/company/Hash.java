@@ -12,18 +12,18 @@ public class Hash {
     //larger hex makes keys more rare!
     //nothing above 7 for this project
 
-    public byte[] biteHash(String s) throws NoSuchAlgorithmException {
+    public static byte[] biteHash(String s) throws NoSuchAlgorithmException {
         MessageDigest m = MessageDigest.getInstance("SHA-256");
         return m.digest(s.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String hashHex(byte[] b){
+    public static String hashHex(byte[] b){
         BigInteger intHash = new BigInteger(1, b);
         StringBuilder sb = new StringBuilder(intHash.toString(16));
         return sb.toString();
     }
 
-    public String hash(String s) throws NoSuchAlgorithmException {
+    public static String hash(String s) throws NoSuchAlgorithmException {
         return hashHex(biteHash(s));
     }
 
@@ -57,12 +57,14 @@ public class Hash {
         System.out.println(i);
     }
 
-    public String mineTrialwString(String str) throws NoSuchAlgorithmException {
-        String temp;
+    //Generate hash solution for a block
+    public String mineSolution(String str) throws NoSuchAlgorithmException {
+        String nonce;
         do{
-            temp = str + genString();
+            nonce = str + genString();
             //key = hash(genString());
-        } while(!checkHash(hash(temp)));
-        return temp;
+        } while(!checkHash(hash(nonce)));
+        return nonce;
     }
+
 }
